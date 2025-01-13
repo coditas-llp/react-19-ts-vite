@@ -2,10 +2,10 @@
 
 Simple and optimized React project setiup. It includes:
 
-- [x] React v18
+- [x] React v19
 - [x] TypeScript v5 and TSX support
-- [x] [Storybook (v7)](https://storybook.js.org)
-- [x] [Vite (v4.3)](https://vitejs.dev)
+- [x] [Storybook (v8)](https://storybook.js.org)
+- [x] [Vite (v6.0.7)](https://vitejs.dev)
 - [x] Hot Module Replacement using [vite-hmr](https://vitejs.dev/guide/api-hmr.html)
 - [x] SASS support
 - [x] Custom TypeScript config
