@@ -154,4 +154,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Author
 
-AMANK
+[AMANK](https://people.zoho.in/coditassolutionsllp/zp#home/user/profile-id:48572000000210175)
