@@ -1,0 +1,14 @@
+@mixin heading($fontSize) {
+  font-family: Roboto-Bold;
+  font-size: $fontSize;
+}
+
+@mixin paragraph($fontFamily, $fontSize) {
+  font-family: $fontFamily;
+  font-size: $fontSize;
+}
+
+@mixin buttonAppearance($backgroundColor, $textColor) {
+  background-color: $backgroundColor;
+  color: $textColor;
+}
