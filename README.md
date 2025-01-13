@@ -25,12 +25,14 @@ A modern, feature-rich boilerplate for React applications with TypeScript, SASS,
 ### Installation
 
 1. Clone the repository:
+
 ```
 
 2. Install dependencies:
 ```
 
 3. Start the development server:
+
 ```bash
 npm start
 ```
@@ -72,6 +74,7 @@ Components are built following a modular architecture:
 - Interface-first approach with TypeScript
 
 Example:
+
 ```typescript
 import React from 'react';
 import styles from './Component.module.scss';
@@ -127,11 +130,13 @@ Vite provides several powerful features:
 ## 📦 Production Build
 
 Create a production build:
+
 ```bash
 npm run build
 ```
 
 Preview the production build:
+
 ```bash
 npm run preview
 ```
@@ -150,4 +155,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👥 Author
 
 AMANK
-```
