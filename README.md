@@ -148,9 +148,6 @@ npm run preview
 - [TypeScript Documentation](https://www.typescriptlang.org/)
 - [Storybook Documentation](https://storybook.js.org/)
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details
 
 ## 👥 Author
 
