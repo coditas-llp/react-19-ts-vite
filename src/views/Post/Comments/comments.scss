@@ -1,0 +1,151 @@
+@use '../../../styles/constants';
+@use '../../../styles/mixins';
+
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.comments-loading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  padding: 2rem;
+  color: constants.$blue-grey-600;
+
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid constants.$blue-100;
+    border-top-color: constants.$blue;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.comment-card {
+  background: constants.$white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid constants.$blue-grey-200;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: constants.$blue-300;
+    box-shadow: 0 4px 12px rgba(constants.$blue-grey-900, 0.05);
+  }
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: constants.$blue-100;
+    color: constants.$blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .user-info {
+    .user-name {
+      color: constants.$blue-900;
+      margin-bottom: 0.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .user-email {
+      color: constants.$blue-grey-600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: constants.$blue;
+      }
+    }
+  }
+}
+
+.comment-body {
+  color: constants.$blue-grey-800;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  padding-left: 3.5rem; // Aligns with the avatar
+}
+
+.comment-actions {
+  display: flex;
+  gap: 1rem;
+  padding-left: 3.5rem;
+
+  .action-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: constants.$blue-grey-100;
+    color: constants.$blue-grey-600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+
+    &:hover {
+      background: constants.$blue-100;
+      color: constants.$blue;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .comment-body,
+  .comment-actions {
+    padding-left: 0;
+  }
+
+  .comment-card {
+    padding: 1rem;
+  }
+
+  .comment-header {
+    .avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 0.75rem;
+    }
+  }
+
+  .comment-actions {
+    flex-wrap: wrap;
+    
+    .action-button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}

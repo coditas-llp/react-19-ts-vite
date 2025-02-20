@@ -1,0 +1,118 @@
+@use '../../styles/constants';
+@use '../../styles/mixins';
+.readMore {
+    color: constants.$blue;
+    
+    svg {
+      transform: translateX(4px);
+    }
+  }
+
+.post-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.post-card {
+  background: constants.$white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(constants.$blue-grey-900, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  .post-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid constants.$blue-grey-300;
+    padding-bottom: 1rem;
+
+    h2 {
+      color: constants.$blue-900;
+      margin-bottom: 0.5rem;
+    }
+
+    .post-metadata {
+      display: flex;
+      gap: 1rem;
+      color: constants.$blue-grey-600;
+      font-size: 0.875rem;
+
+      .post-id {
+        background: constants.$blue-100;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        color: constants.$blue;
+      }
+    }
+  }
+
+  .post-content {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    color: constants.$grey-900;
+  }
+
+  .post-interaction {
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .post-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        border: 1px solid constants.$blue-grey-300;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
+
+        &:focus {
+          outline: none;
+          border-color: constants.$blue;
+          box-shadow: 0 0 0 2px rgba(constants.$blue, 0.1);
+        }
+
+        &::placeholder {
+          color: constants.$blue-grey-500;
+        }
+      }
+    }
+  }
+}
+
+.comments-section {
+  background: constants.$white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(constants.$blue-grey-900, 0.1);
+  padding: 2rem;
+
+  h4 {
+    color: constants.$blue-900;
+    margin-bottom: 1.5rem;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .post-container {
+    margin: 1rem auto;
+  }
+
+  .post-card {
+    padding: 1.5rem;
+  }
+
+  .post-interaction {
+    .input-group {
+      flex-direction: column;
+      
+      .post-input {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

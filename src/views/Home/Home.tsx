@@ -1,21 +1,92 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import style from './Home.module.scss';
+import { usePostsModel } from 'models/usePostsModel';
+import { Link } from 'react-router-dom';
+import { Heading } from 'components/Heading/Heading';
+import { Paragraph } from 'components/Paragraph/Paragraph';
+import { InfiniteScroll } from 'components/InfiniteScroll/InfiniteScroll';
+import './home.scss';
+interface IPost {
+  id: number;
+  title: string;
+  body: string;
+}
 
 const Home: React.FC = () => {
+  const [page, setPage] = useState(1);
+  console.log('>> page', page);
+  const { data, isLoading, refetch } = usePostsModel([], `?_page=${page}&_limit=10`);
+  const [allPosts, setAllPosts] = useState<IPost[]>([]);
+  console.log('>> allPosts', allPosts);
+  const [value, setValue] = useState('');
+  console.log('>> data', data);
+  useEffect(() => {
+    if (data?.length) {
+      setAllPosts((prev) => [...prev, ...data].filter(x => x) as IPost[]);
+    }
+  }, [data]);
+
+  const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    
+  };
+
   return (
-    <div className={style.HomeContainer}>
-      <h1>
-        <strong>Home</strong>
-      </h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ullamcorper eros nisi, at pellentesque erat rutrum
-        et. In at sagittis tellus. In accumsan euismod tortor, vitae lacinia tellus mattis in. Duis imperdiet suscipit
-        semper. Morbi lacus nibh, imperdiet sit amet consequat et, posuere id diam. Suspendisse blandit, diam ac
-        sagittis sagittis, mi lorem aliquam urna, a mollis massa arcu id neque. Aliquam erat volutpat. Vivamus sodales
-        dolor justo, eget sagittis libero pretium nec. Aenean vel nunc nec mauris imperdiet rhoncus et non felis. Orci
-        varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In elementum purus sit amet
-        tempor finibus.
-      </p>
+    <div className={style.homeContainer}>
+      <header className={style.header}>
+        <Heading variant="H2">Latest Posts</Heading>
+        <Paragraph variant="Regular" className={style.subtitle}>
+          Explore our collection of interesting articles
+        </Paragraph>
+      </header>
+
+      <div className="post-interaction">
+        <div className="input-group">
+          <input
+            placeholder="Search..."
+            onChange={onValueChange}
+            value={value}
+            className="post-input"
+          />
+
+        </div>
+      </div>
+
+      <InfiniteScroll setData={setAllPosts} queyKey={['posts']} page={page} setPage={setPage} refetch={refetch} >
+
+        <div className={style.postsGrid}>
+          {(allPosts)?.map((post: IPost) => (
+            <Link to={`/post?id=${post.id}`} key={post.id} className={style.postCard}>
+              <article>
+                <div className={style.postNumber}>#{post.id}</div>
+                <Heading variant="H4" className={style.postTitle}>
+                  {post.title}
+                </Heading>
+                <Paragraph variant="Regular" className={style.postExcerpt}>
+                  {post?.body?.slice(0, 120)}...
+                </Paragraph>
+                <div className={style.readMore}>
+                  <span>Read More</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M5 12H19M19 12L12 5M19 12L12 19"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </div>
+      </InfiniteScroll>
+      {isLoading && (
+        <div className={style.loadingIndicator}>
+          Loading more posts...
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,129 @@
-.HomeContainer {
-  padding: 16px;
-  h1 {
-    margin-bottom: 16px;
+@use '../../styles/constants';
+@use '../../styles/mixins';
+
+.homeContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h2 {
+    color: constants.$blue-900;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    color: constants.$blue-grey-600;
+    font-size: 1.125rem;
+  }
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.postCard {
+  background: constants.$white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(constants.$blue-grey-900, 0.06);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: 1px solid constants.$blue-grey-200;
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(constants.$blue-grey-900, 0.1);
+    border-color: constants.$blue-300;
+
+    .readMore {
+      color: constants.$blue;
+      
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  article {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .postNumber {
+    display: inline-block;
+    background: constants.$blue-100;
+    color: constants.$blue;
+    padding: 0.25rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .postTitle {
+    color: constants.$blue-900;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .postExcerpt {
+    color: constants.$blue-grey-600;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .readMore {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: constants.$blue-600;
+    font-weight: 500;
+    margin-top: auto;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
+  }
+}
+
+.loadingIndicator {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .homeContainer {
+    padding: 1rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+    
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .postsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
