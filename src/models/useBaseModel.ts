@@ -1,7 +1,7 @@
 import { RefetchOptions, useQuery } from '@tanstack/react-query';
 import { useLoader } from 'LoaderContext/useLoader';
 import { BaseModel } from 'modelTypes';
-import {  useEffect } from 'react';
+import { useEffect } from 'react';
 import { addData, deleteData, getData, updateData } from 'services/apiService';
 import { queryClient } from '../main';
 
