@@ -6,10 +6,7 @@ interface LoaderProps {
   variant?: 'primary' | 'light';
 }
 
-export const Loader: React.FC<LoaderProps> = ({ 
-  size = 'medium',
-  variant = 'primary'
-}) => {
+export const Loader: React.FC<LoaderProps> = ({ size = 'medium', variant = 'primary' }) => {
   return (
     <div className={styles.loaderWrapper}>
       <div className={`${styles.loader} ${styles[size]} ${styles[variant]}`}>
@@ -19,4 +16,4 @@ export const Loader: React.FC<LoaderProps> = ({
       </div>
     </div>
   );
-}; 
+};

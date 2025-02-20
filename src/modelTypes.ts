@@ -1,4 +1,4 @@
 export interface BaseModel {
-    queryKey: string[];
-    apiUrl: string;
+  queryKey: string[];
+  apiUrl: string;
 }

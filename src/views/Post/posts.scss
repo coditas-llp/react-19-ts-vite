@@ -1,12 +1,12 @@
 @use '../../styles/constants';
 @use '../../styles/mixins';
 .readMore {
-    color: constants.$blue;
-    
-    svg {
-      transform: translateX(4px);
-    }
+  color: constants.$blue;
+
+  svg {
+    transform: translateX(4px);
   }
+}
 
 .post-container {
   max-width: 800px;
@@ -105,7 +105,7 @@
   .post-interaction {
     .input-group {
       flex-direction: column;
-      
+
       .post-input {
         width: 100%;
       }

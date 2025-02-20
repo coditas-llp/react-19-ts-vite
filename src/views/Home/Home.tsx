@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Home.module.scss';
 import { usePostsModel } from 'models/usePostsModel';
 import { Link } from 'react-router-dom';
@@ -14,21 +14,17 @@ interface IPost {
 
 const Home: React.FC = () => {
   const [page, setPage] = useState(1);
-  console.log('>> page', page);
   const { data, isLoading, refetch } = usePostsModel([], `?_page=${page}&_limit=10`);
   const [allPosts, setAllPosts] = useState<IPost[]>([]);
-  console.log('>> allPosts', allPosts);
   const [value, setValue] = useState('');
-  console.log('>> data', data);
   useEffect(() => {
     if (data?.length) {
-      setAllPosts((prev) => [...prev, ...data].filter(x => x) as IPost[]);
+      setAllPosts((prev) => [...prev, ...data].filter((x) => x) as IPost[]);
     }
   }, [data]);
 
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
-    
   };
 
   return (
@@ -42,20 +38,13 @@ const Home: React.FC = () => {
 
       <div className="post-interaction">
         <div className="input-group">
-          <input
-            placeholder="Search..."
-            onChange={onValueChange}
-            value={value}
-            className="post-input"
-          />
-
+          <input placeholder="Search..." onChange={onValueChange} value={value} className="post-input" />
         </div>
       </div>
 
-      <InfiniteScroll setData={setAllPosts} queyKey={['posts']} page={page} setPage={setPage} refetch={refetch} >
-
+      <InfiniteScroll setData={setAllPosts} queyKey={['posts']} page={page} setPage={setPage} refetch={refetch}>
         <div className={style.postsGrid}>
-          {(allPosts)?.map((post: IPost) => (
+          {allPosts?.map((post: IPost) => (
             <Link to={`/post?id=${post.id}`} key={post.id} className={style.postCard}>
               <article>
                 <div className={style.postNumber}>#{post.id}</div>
@@ -82,11 +71,7 @@ const Home: React.FC = () => {
           ))}
         </div>
       </InfiniteScroll>
-      {isLoading && (
-        <div className={style.loadingIndicator}>
-          Loading more posts...
-        </div>
-      )}
+      {isLoading && <div className={style.loadingIndicator}>Loading more posts...</div>}
     </div>
   );
 };

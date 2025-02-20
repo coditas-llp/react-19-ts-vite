@@ -148,7 +148,6 @@ npm run preview
 - [TypeScript Documentation](https://www.typescriptlang.org/)
 - [Storybook Documentation](https://storybook.js.org/)
 
-
 ## 👥 Author
 
 [AMANK](https://people.zoho.in/coditassolutionsllp/zp#home/user/profile-id:48572000000210175)
