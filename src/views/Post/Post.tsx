@@ -15,7 +15,7 @@ interface IPostProps {
 export const Post = () => {
   const id = new URLSearchParams(location.search).get('id');
   const { data, $save } = usePostsModel([`postDetails-${id}`], `/${id}`);
-  const post = (Array.isArray(data) ? data[0] : data) || ({ title: '', body: '' } as IPostProps);
+  const post: any = (Array.isArray(data) ? data[0] : data) || ({ title: '', body: '' } as IPostProps);
   const [value, setValue] = useState('');
   const navigate = useNavigate();
   const onSave = () => {

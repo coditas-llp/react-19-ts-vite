@@ -1,3 +1,4 @@
+import { MODEL_RESOURCES } from './modelResources';
 import { useBaseModel } from './useBaseModel';
 
 interface ICommentModelProps {
@@ -9,8 +10,8 @@ interface ICommentModelProps {
 }
 
 export const useCommentModel = (queryKey: string[] = [], appendURL: string = '') => {
-  const resourceName = 'comments' + appendURL;
-  const queryKeys = ['comments' + appendURL, ...queryKey];
+  const resourceName = MODEL_RESOURCES.COMMENT_MODEL.resourceName + appendURL;
+  const queryKeys = [...MODEL_RESOURCES.COMMENT_MODEL.queryKeys, ...queryKey];
 
   const { data, isLoading, hasError, ...rest } = useBaseModel<ICommentModelProps[]>({
     apiUrl: resourceName,

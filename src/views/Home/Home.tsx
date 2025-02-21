@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import style from './Home.module.scss';
-import { usePostsModel } from 'models/usePostsModel';
+import { IPostModelProps, usePostsModel } from 'models/usePostsModel';
 import { Link } from 'react-router-dom';
 import { Heading } from 'components/Heading/Heading';
 import { Paragraph } from 'components/Paragraph/Paragraph';
 import { InfiniteScroll } from 'components/InfiniteScroll/InfiniteScroll';
 import './home.scss';
-interface IPost {
-  id: number;
-  title: string;
-  body: string;
-}
 
 const Home: React.FC = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, refetch } = usePostsModel([], `?_page=${page}&_limit=10`);
-  const [allPosts, setAllPosts] = useState<IPost[]>([]);
+  const { data, isLoading, refetch, getPostWithImage } = usePostsModel([], `?_page=${page}&_limit=10`);
+  console.log('>> data', data);
+  const [allPosts, setAllPosts] = useState<IPostModelProps[]>([]);
   const [value, setValue] = useState('');
   useEffect(() => {
     if (data?.length) {
-      setAllPosts((prev) => [...prev, ...data].filter((x) => x) as IPost[]);
+      setAllPosts((prev) => [...prev, ...data].filter((x) => x) as IPostModelProps[]);
     }
   }, [data]);
 
@@ -44,13 +40,16 @@ const Home: React.FC = () => {
 
       <InfiniteScroll setData={setAllPosts} queyKey={['posts']} page={page} setPage={setPage} refetch={refetch}>
         <div className={style.postsGrid}>
-          {allPosts?.map((post: IPost) => (
+          {getPostWithImage(allPosts)?.map((post) => (
             <Link to={`/post?id=${post.id}`} key={post.id} className={style.postCard}>
               <article>
                 <div className={style.postNumber}>#{post.id}</div>
+
+                <img loading="lazy" src={post.img} />
                 <Heading variant="H4" className={style.postTitle}>
                   {post.title}
                 </Heading>
+
                 <Paragraph variant="Regular" className={style.postExcerpt}>
                   {post?.body?.slice(0, 120)}...
                 </Paragraph>

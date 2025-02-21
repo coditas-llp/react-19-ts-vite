@@ -16,7 +16,7 @@ export const InfiniteScroll: React.FC<IInfiniteScrollProps> = (props) => {
     queryKey: props.queyKey,
     queryFn: ({ pageParam = 1 }) => getData(props.queyKey.join('') + `?_page=${pageParam}&_limit=10`),
     initialPageParam: 1,
-    getNextPageParam: (lastPage:any, allPages) => {
+    getNextPageParam: (lastPage: any, allPages) => {
       return lastPage?.length === 10 ? allPages.length + 1 : undefined;
     },
   });
