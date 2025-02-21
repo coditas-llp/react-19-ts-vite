@@ -2,7 +2,7 @@
 @use '../../styles/mixins';
 .readMore {
   color: constants.$blue;
-
+  cursor: pointer;
   svg {
     transform: translateX(4px);
   }

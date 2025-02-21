@@ -9,7 +9,7 @@ import './home.scss';
 
 const Home: React.FC = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, refetch, getPostWithImage } = usePostsModel([], `?_page=${page}&_limit=10`);
+  const { data, isLoading, refetch, getPostArrayWithImage } = usePostsModel([], `?_page=${page}&_limit=10`);
   console.log('>> data', data);
   const [allPosts, setAllPosts] = useState<IPostModelProps[]>([]);
   const [value, setValue] = useState('');
@@ -26,7 +26,7 @@ const Home: React.FC = () => {
   return (
     <div className={style.homeContainer}>
       <header className={style.header}>
-        <Heading variant="H2">Latest Posts</Heading>
+        <Heading style={{color: 'white'}} variant="H2">Latest Posts</Heading>
         <Paragraph variant="Regular" className={style.subtitle}>
           Explore our collection of interesting articles
         </Paragraph>
@@ -40,7 +40,7 @@ const Home: React.FC = () => {
 
       <InfiniteScroll setData={setAllPosts} queyKey={['posts']} page={page} setPage={setPage} refetch={refetch}>
         <div className={style.postsGrid}>
-          {getPostWithImage(allPosts)?.map((post) => (
+          {getPostArrayWithImage(allPosts)?.map((post) => (
             <Link to={`/post?id=${post.id}`} key={post.id} className={style.postCard}>
               <article>
                 <div className={style.postNumber}>#{post.id}</div>

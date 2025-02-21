@@ -1,6 +1,7 @@
 @use '../../styles/mixins';
 
 .heading {
+  color: white;
   &.heading1 {
     @include mixins.heading(64px);
   }

@@ -14,8 +14,8 @@ interface IPostProps {
 
 export const Post = () => {
   const id = new URLSearchParams(location.search).get('id');
-  const { data, $save } = usePostsModel([`postDetails-${id}`], `/${id}`);
-  const post: any = (Array.isArray(data) ? data[0] : data) || ({ title: '', body: '' } as IPostProps);
+  const { data, $save,getPostWithImage } = usePostsModel([`postDetails-${id}`], `/${id}`);
+  const post: any =  (Array.isArray(data) ? data[0] : data) || ({ title: '', body: '' } as IPostProps);
   const [value, setValue] = useState('');
   const navigate = useNavigate();
   const onSave = () => {
@@ -24,10 +24,11 @@ export const Post = () => {
 
   return (
     <div className="post-container">
+      
+      <div className="post-card">
       <div className={'readMore'} onClick={() => navigate('/')}>
         <span>Back</span>
       </div>
-      <div className="post-card">
         <div className="post-header">
           <Heading variant="H2">{post?.title}</Heading>
           <div className="post-metadata">
@@ -35,6 +36,8 @@ export const Post = () => {
             <span className="post-date">{new Date().toLocaleDateString()}</span>
           </div>
         </div>
+
+        <img width={'100%'} src={getPostWithImage(post||{}).img} alt={post?.title} />
 
         <div className="post-content">
           <Paragraph variant="Regular">{post?.body}</Paragraph>

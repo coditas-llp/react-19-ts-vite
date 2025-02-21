@@ -6,7 +6,7 @@ interface IPostProps {
   body?: string;
   pages?: any;
   id?: string;
-  img: string;
+  img?: string;
 }
 export interface IPostModelProps {
   pages: IPostProps[];
@@ -21,12 +21,19 @@ export const usePostsModel = (queryKey: string[] = [], appendURL: string = '') =
     queryKey: queryKeys,
   });
 
-  const getPostWithImage = (pagePost: IPostProps[]): IPostProps[] => {
+  const getPostWithImage = (pagePost: IPostProps) => {
+    return  ({
+      ...pagePost,
+      img: `https://picsum.photos/id/${pagePost.id}/736/354`,
+    });
+  } 
+
+  const getPostArrayWithImage = (pagePost: IPostProps[]): IPostProps[] => {
     return pagePost.map((post) => ({
       ...post,
       img: `https://picsum.photos/id/${post.id}/536/354`,
     }));
   };
 
-  return { data, isLoading, getPostWithImage, hasError, ...rest };
+  return { data, isLoading, getPostArrayWithImage, getPostWithImage , hasError, ...rest };
 };

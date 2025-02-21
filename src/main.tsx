@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './styles/base.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { LoaderProvider } from 'LoaderContext/Provider.tsx';
+import { BackgroundPage } from 'components/BackgroundPage/BackgroundPage.tsx';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,8 +18,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <LoaderProvider>
       <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+        <BackgroundPage>
+          <App />
+        </BackgroundPage>      
+        </QueryClientProvider>
     </LoaderProvider>
   </React.StrictMode>,
 );
