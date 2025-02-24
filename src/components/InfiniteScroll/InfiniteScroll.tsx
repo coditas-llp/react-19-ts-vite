@@ -1,22 +1,27 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { IBaseModelOptions } from 'models/useBaseModel';
 import React, { useEffect, useCallback } from 'react';
 import { getData } from 'services/apiService';
 
 interface IInfiniteScrollProps {
   children: React.ReactNode;
   refetch: Function;
-  setPage: any;
   page: number;
   queyKey: string[];
-  setData: any;
+  setData: Function;
+  options: IBaseModelOptions;
+  setPage: Function;
 }
 
 export const InfiniteScroll: React.FC<IInfiniteScrollProps> = (props) => {
   const { data, fetchNextPage } = useInfiniteQuery({
     queryKey: props.queyKey,
-    queryFn: ({ pageParam = 1 }) => getData(props.queyKey.join('') + `?_page=${pageParam}&_limit=10`),
+    queryFn: async ({ pageParam = 1 }) => {
+      const data = await getData(props.queyKey.join('') + `?_page=${pageParam}&_limit=10`, props.options);
+      return data as { length: number };
+    },
     initialPageParam: 1,
-    getNextPageParam: (lastPage: any, allPages) => {
+    getNextPageParam: (lastPage: { length: number }, allPages: { length: number }) => {
       return lastPage?.length === 10 ? allPages.length + 1 : undefined;
     },
   });

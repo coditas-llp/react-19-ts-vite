@@ -13,9 +13,7 @@ export const BackgroundPage = ({ children }: BackgroundPageProps) => {
         <div className="gradient-sphere gradient-sphere-2"></div>
         <div className="gradient-sphere gradient-sphere-3"></div>
       </div>
-      <div className="content">
-        {children}
-      </div>
+      <div className="content">{children}</div>
     </div>
   );
-}; 
+};

@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import style from './Home.module.scss';
-import { IPostModelProps, usePostsModel } from 'models/usePostsModel';
+import { IPostProps, queryOptions, usePostsModel } from 'models/usePostsModel';
 import { Link } from 'react-router-dom';
 import { Heading } from 'components/Heading/Heading';
 import { Paragraph } from 'components/Paragraph/Paragraph';
 import { InfiniteScroll } from 'components/InfiniteScroll/InfiniteScroll';
 import './home.scss';
+import { AsyncIamge } from 'components/AsyncImage/AsyncImage';
 
 const Home: React.FC = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading, refetch, getPostArrayWithImage } = usePostsModel([], `?_page=${page}&_limit=10`);
-  console.log('>> data', data);
-  const [allPosts, setAllPosts] = useState<IPostModelProps[]>([]);
+  const { data, isLoading, refetch } = usePostsModel([], `?_page=${page}&_limit=10`, queryOptions);
+  const [allPosts, setAllPosts] = useState<IPostProps[]>([]);
   const [value, setValue] = useState('');
+
   useEffect(() => {
     if (data?.length) {
-      setAllPosts((prev) => [...prev, ...data].filter((x) => x) as IPostModelProps[]);
+      setAllPosts((prev) => [...prev, ...data].filter((x) => x) as IPostProps[]);
     }
   }, [data]);
-
+  console.log('>> data', data);
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
@@ -26,7 +27,9 @@ const Home: React.FC = () => {
   return (
     <div className={style.homeContainer}>
       <header className={style.header}>
-        <Heading style={{color: 'white'}} variant="H2">Latest Posts</Heading>
+        <Heading style={{ color: 'white' }} variant="H2">
+          Latest Posts
+        </Heading>
         <Paragraph variant="Regular" className={style.subtitle}>
           Explore our collection of interesting articles
         </Paragraph>
@@ -38,14 +41,20 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <InfiniteScroll setData={setAllPosts} queyKey={['posts']} page={page} setPage={setPage} refetch={refetch}>
+      <InfiniteScroll
+        options={queryOptions}
+        setData={setAllPosts}
+        queyKey={['posts']}
+        page={page}
+        setPage={setPage}
+        refetch={refetch}
+      >
         <div className={style.postsGrid}>
-          {getPostArrayWithImage(allPosts)?.map((post) => (
+          {allPosts?.map((post) => (
             <Link to={`/post?id=${post.id}`} key={post.id} className={style.postCard}>
               <article>
                 <div className={style.postNumber}>#{post.id}</div>
-
-                <img loading="lazy" src={post.img} />
+                <AsyncIamge width={318} height={154} src={post?.img || ''} />
                 <Heading variant="H4" className={style.postTitle}>
                   {post.title}
                 </Heading>

@@ -1,7 +1,7 @@
 import { MODEL_RESOURCES } from './modelResources';
-import { useBaseModel } from './useBaseModel';
+import { IBaseModelOptions, useBaseModel } from './useBaseModel';
 
-interface IPostProps {
+export interface IPostProps {
   title?: string;
   body?: string;
   pages?: any;
@@ -12,28 +12,36 @@ export interface IPostModelProps {
   pages: IPostProps[];
 }
 
-export const usePostsModel = (queryKey: string[] = [], appendURL: string = '') => {
+export const queryOptions: IBaseModelOptions = {
+  dataFormatter: (data: IPostProps[]) => {
+    console.log('>> data', data);
+    return data?.map((page: IPostProps) => {
+      return {
+        ...page,
+        img: `https://picsum.photos/id/${page.id}/736/354`,
+      };
+    });
+  },
+};
+
+export const usePostsModel = (queryKey: string[] = [], appendURL: string = '', options?: IBaseModelOptions) => {
+  console.log('>> options', options);
   const queryKeys = [...MODEL_RESOURCES.POST_MODEL.queryKeys, ...queryKey];
   const resourceName = MODEL_RESOURCES.POST_MODEL.resourceName + appendURL;
 
-  const { data, isLoading, hasError, ...rest } = useBaseModel<IPostModelProps[]>({
+  const { data, isLoading, hasError, updateCache, ...rest } = useBaseModel<IPostModelProps[]>({
     apiUrl: resourceName,
     queryKey: queryKeys,
+    options,
   });
+  console.log('>> data', data);
 
   const getPostWithImage = (pagePost: IPostProps) => {
-    return  ({
+    return {
       ...pagePost,
       img: `https://picsum.photos/id/${pagePost.id}/736/354`,
-    });
-  } 
-
-  const getPostArrayWithImage = (pagePost: IPostProps[]): IPostProps[] => {
-    return pagePost.map((post) => ({
-      ...post,
-      img: `https://picsum.photos/id/${post.id}/536/354`,
-    }));
+    };
   };
 
-  return { data, isLoading, getPostArrayWithImage, getPostWithImage , hasError, ...rest };
+  return { data, isLoading, getPostWithImage, hasError, ...rest };
 };

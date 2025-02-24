@@ -1,4 +1,4 @@
-import { usePostsModel } from 'models/usePostsModel';
+import { IPostModelProps, usePostsModel } from 'models/usePostsModel';
 import { useState } from 'react';
 import { Comments } from './Comments/Comments';
 import './posts.scss';
@@ -6,16 +6,17 @@ import { Button } from 'components/Button/Button';
 import { Heading } from 'components/Heading/Heading';
 import { Paragraph } from 'components/Paragraph/Paragraph';
 import { useNavigate } from 'react-router-dom';
+import { AsyncIamge } from 'components/AsyncImage/AsyncImage';
 
-interface IPostProps {
-  title: string;
-  body: string;
+interface IPostProps extends IPostModelProps {
+  title?: string;
+  body?: string;
 }
 
 export const Post = () => {
   const id = new URLSearchParams(location.search).get('id');
-  const { data, $save,getPostWithImage } = usePostsModel([`postDetails-${id}`], `/${id}`);
-  const post: any =  (Array.isArray(data) ? data[0] : data) || ({ title: '', body: '' } as IPostProps);
+  const { data, $save, getPostWithImage } = usePostsModel([`postDetails-${id}`], `/${id}`);
+  const post: IPostProps = (Array.isArray(data) ? data[0] : data) || ({ title: '', body: '' } as IPostProps);
   const [value, setValue] = useState('');
   const navigate = useNavigate();
   const onSave = () => {
@@ -24,20 +25,19 @@ export const Post = () => {
 
   return (
     <div className="post-container">
-      
       <div className="post-card">
-      <div className={'readMore'} onClick={() => navigate('/')}>
-        <span>Back</span>
-      </div>
+        <div className={'readMore'} onClick={() => navigate('/')}>
+          <span>Back</span>
+        </div>
         <div className="post-header">
-          <Heading variant="H2">{post?.title}</Heading>
+          <Heading variant="H4">{post?.title}</Heading>
           <div className="post-metadata">
             <span className="post-id">Post #{id}</span>
             <span className="post-date">{new Date().toLocaleDateString()}</span>
           </div>
         </div>
 
-        <img width={'100%'} src={getPostWithImage(post||{}).img} alt={post?.title} />
+        <AsyncIamge height={338} width={704} src={getPostWithImage(post || {}).img} />
 
         <div className="post-content">
           <Paragraph variant="Regular">{post?.body}</Paragraph>

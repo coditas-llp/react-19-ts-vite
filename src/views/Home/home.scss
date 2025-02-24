@@ -1,6 +1,9 @@
 @use '../../styles/constants';
 @use '../../styles/mixins';
-
+.async-img {
+  border: 2px solid lightgray;
+  border-radius: 8px;
+}
 .post-interaction {
   .input-group {
     display: flex;

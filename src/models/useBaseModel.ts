@@ -1,21 +1,19 @@
 import { RefetchOptions, useQuery } from '@tanstack/react-query';
 import { useLoader } from 'LoaderContext/useLoader';
-import { BaseModel } from 'modelTypes';
 import { useEffect } from 'react';
 import { addData, deleteData, getData, updateData } from 'services/apiService';
 import { queryClient } from '../main';
 
 export const BASE_URL = 'https://jsonplaceholder.typicode.com';
-
-const useApiCall = (apiUrl: string, queryKey: string[]) => {
-  useEffect(() => {}, [apiUrl, queryKey]);
-  return useQuery({
-    queryKey: queryKey,
-    queryFn: async () => await getData(apiUrl),
-  });
-};
-
-interface IBaseModelProps<T> {
+export interface IBaseModelOptions {
+  dataFormatter?: any;
+}
+export interface IBaseModelProps {
+  queryKey: string[];
+  apiUrl: string;
+  options?: IBaseModelOptions;
+}
+interface IBaseModelReturnProps<T> {
   status: 'error' | 'success' | 'pending';
   data: T;
   error: Error | null;
@@ -25,16 +23,23 @@ interface IBaseModelProps<T> {
   hasError: boolean;
   findOneById: <T>(id: string, queryKeys?: string[]) => T;
   filterBy: <T>(filter: string, filterKey: string, queryKeys?: string[]) => T;
-  $delete: (data: any, appendURL?: string) => Promise<any>;
-  $update: (data: any, appendURL?: string) => Promise<any>;
-  $save: (data: any, appendURL?: string) => Promise<any>;
+  $delete: <T>(data: T, appendURL?: string) => Promise<any>;
+  $update: <T>(data: T, appendURL?: string) => Promise<any>;
+  $save: <T>(data: T, appendURL?: string) => Promise<any>;
   refetch: (options?: RefetchOptions) => Promise<any>;
+  updateCache: <T>(newData: T, cb: <T>(data: T) => void) => void;
 }
 
-export const useBaseModel = <T>({ apiUrl, queryKey }: BaseModel): IBaseModelProps<T> => {
-  const { isLoading, setLoading, hasError, setHasError } = useLoader();
-  const { status, data, error, isFetching, refetch } = useApiCall(apiUrl, queryKey);
+const useApiCall = (apiUrl: string, queryKey: string[], options?: IBaseModelOptions) => {
+  return useQuery({
+    queryKey: queryKey,
+    queryFn: async () => await getData(apiUrl, options),
+  });
+};
 
+export const useBaseModel = <T>({ apiUrl, queryKey, options }: IBaseModelProps): IBaseModelReturnProps<T> => {
+  const { isLoading, setLoading, hasError, setHasError } = useLoader();
+  const { status, data, error, isFetching, refetch } = useApiCall(apiUrl, queryKey, options);
   useEffect(() => {
     setHasError(status === 'error');
     setLoading(status === 'pending');
@@ -46,6 +51,14 @@ export const useBaseModel = <T>({ apiUrl, queryKey }: BaseModel): IBaseModelProp
   const filterBy = <T>(filter: string, filterKey: string, queryKeys: string[] = queryKey): T =>
     ((queryClient.getQueryData(queryKeys) as [])?.filter((item: any) => item[filterKey]?.includes(filter)) as T) ||
     ([] as T);
+
+  const updateCache = (key: string, cb: any) => {
+    queryClient.setQueryData(queryKey, (oldData: any) => {
+      console.log('>> oldData', oldData);
+      console.log('>> key', key);
+      if (oldData) return { ...oldData, [key]: cb(oldData[key]) };
+    });
+  };
 
   const $save = async (data: any, appendURL: string = '') => {
     const response = await addData(`${apiUrl}${appendURL}`, data);
@@ -78,5 +91,6 @@ export const useBaseModel = <T>({ apiUrl, queryKey }: BaseModel): IBaseModelProp
     $update,
     $save,
     refetch,
-  } as IBaseModelProps<T>;
+    updateCache,
+  } as IBaseModelReturnProps<T>;
 };
